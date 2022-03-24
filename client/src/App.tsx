@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { MapContainer, TileLayer, MapConsumer } from 'react-leaflet';
 import './App.sass';
 import { ICoords } from './interfaces';
 import { DraggableMarker } from './components/draggable-marker';
+import { MessageFormWrapper } from './components/message-form-wrapper';
 
 const center = {
   lat: 41.505,
   lng: -85.09,
 };
 
-function App() {
+export const App = (): ReactElement => {
   const [ coords, setCoords ] = useState<ICoords>(center);
   const [ waitLocation, setWaitLocation ] = useState(true);
   useEffect(() => {
@@ -50,8 +51,9 @@ function App() {
           </>
         )}
       </MapContainer>
+      <MessageFormWrapper waitLocation={waitLocation}/>
     </div>
   );
-}
+};
 
 export default App;
