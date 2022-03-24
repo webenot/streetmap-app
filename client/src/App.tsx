@@ -4,6 +4,7 @@ import './App.sass';
 import { ICoords } from './interfaces';
 import { DraggableMarker } from './components/draggable-marker';
 import { MessageFormWrapper } from './components/message-form-wrapper';
+import { CommentForm } from './components/comment-form';
 
 const center = {
   lat: 41.505,
@@ -51,7 +52,9 @@ export const App = (): ReactElement => {
           </>
         )}
       </MapContainer>
-      <MessageFormWrapper waitLocation={waitLocation}/>
+      <MessageFormWrapper>
+        <CommentForm waitLocation={waitLocation}/>
+      </MessageFormWrapper>
     </div>
   );
 };
