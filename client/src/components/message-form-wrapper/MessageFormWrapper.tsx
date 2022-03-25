@@ -1,9 +1,9 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, ReactNode } from 'react';
 import { Card, CardText, CardTitle } from 'reactstrap';
 import './MessageFormWrapper.sass';
 
 export interface IMessageFormWrapper {
-  children?: ReactElement | undefined;
+  children?: ReactNode;
 }
 
 export const MessageFormWrapper: FC<IMessageFormWrapper> = ({ children }): ReactElement => {

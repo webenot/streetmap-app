@@ -8,6 +8,7 @@ import { toast, Toaster } from 'react-hot-toast';
 export interface ICommentFormProps {
   waitLocation?: boolean;
   coords: ICoords;
+  children?: never;
 }
 
 export const CommentForm: FC<ICommentFormProps> = ({ waitLocation, coords }): ReactElement => {
