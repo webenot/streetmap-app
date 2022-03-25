@@ -2,6 +2,8 @@ const express = require('express');
 const Joi = require('joi');
 const db = require('../db');
 
+const messages = db.get('messages');
+
 const schema = Joi.object({
   name: Joi.string()
     .min(1)
@@ -22,16 +24,16 @@ const schema = Joi.object({
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json([]);
+router.get('/', async (req, res) => {
+  res.json(await messages.find());
 });
 
 router.post('/', async (req, res, next) => {
+  console.log(req.body);
   try {
     const userMessage = await schema.validateAsync(req.body);
     console.log({ userMessage });
     userMessage.date = new Date();
-    const messages = db.get('messages');
     const newMessage = await messages.insert(userMessage);
     console.log({ newMessage });
     res.json(newMessage);

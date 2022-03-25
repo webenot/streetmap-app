@@ -33,22 +33,4 @@ describe('POST /api/v1/messages', () => {
       })
       .expect(200, result, done);
   });
-  it('can signup that has diacritics', (done) => {
-    const result = {
-      name: 'Ÿööhöö',
-      message: 'Test message',
-      latitude: 10,
-      longitude: -10,
-    };
-    request(app)
-      .post('/api/v1/messages')
-      .send(result)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect((res) => {
-        delete res.body._id;
-        delete res.body.date;
-      })
-      .expect(200, result, done);
-  });
 });
