@@ -27,7 +27,7 @@ export interface IKeyValueObject {
 export const App = (): ReactElement => {
   const [ coords, setCoords ] = useState<ICoords>(center);
   const [ waitLocation, setWaitLocation ] = useState(true);
-  const [ messages, setMessages ] = useState<IKeyValueObject>({});
+  const [ messages, setMessages ] = useState<IMessage[]>([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
