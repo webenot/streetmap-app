@@ -20,10 +20,14 @@ export interface IMessage {
   _id: string;
 }
 
+export interface IKeyValueObject {
+  [key: string]: IMessage[];
+}
+
 export const App = (): ReactElement => {
   const [ coords, setCoords ] = useState<ICoords>(center);
   const [ waitLocation, setWaitLocation ] = useState(true);
-  const [ messages, setMessages ] = useState<IMessage[]>([]);
+  const [ messages, setMessages ] = useState<IKeyValueObject>({});
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -48,8 +52,15 @@ export const App = (): ReactElement => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/api/v1/messages`)
       .then((response) => response.json())
-      .then((msgs) => {
-        setMessages(msgs);
+      .then((msgs: IMessage[]) => {
+        const messagesByLocation: IKeyValueObject = {};
+        msgs.map((message) => {
+          if (!messagesByLocation[`${message.longitude}:${message.latitude}`]) {
+            messagesByLocation[`${message.longitude}:${message.latitude}`] = [];
+          }
+          messagesByLocation[`${message.longitude}:${message.latitude}`].push(message);
+        });
+        setMessages(messagesByLocation);
       });
   }, []);
   return (
@@ -66,16 +77,24 @@ export const App = (): ReactElement => {
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {messages.map((message) => (
-              <CustomMarker
-                key={message._id}
-                coords={{ lat: message.latitude, lng: message.longitude }}
-                iconUrl="/img/map-marker-red.png"
-              >
-                <div><em>{message.name}: {new Date(message.date).toLocaleString()}</em></div>
-                <div>{message.message}</div>
-              </CustomMarker>
-            ))}
+            {Object.keys(messages).map((key) => {
+              const coord = key.split(':');
+              return (
+                <CustomMarker
+                  key={key}
+                  coords={{ lat: +coord[1], lng: +coord[0] }}
+                  iconUrl="/img/map-marker-red.png"
+                >
+                  <div className="messages-wrapper">
+                    {messages[key].map((message) => (
+                      <div className="single-message">
+                        <u><em>{message.name}</em></u>: {message.message}
+                      </div>
+                    ))}
+                  </div>
+                </CustomMarker>
+              )
+            })}
             <CustomMarker coords={coords}/>
           </>
         )}
