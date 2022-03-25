@@ -53,7 +53,7 @@ export const App = (): ReactElement => {
         )}
       </MapContainer>
       <MessageFormWrapper>
-        <CommentForm waitLocation={waitLocation}/>
+        <CommentForm waitLocation={waitLocation} coords={coords}/>
       </MessageFormWrapper>
     </div>
   );
