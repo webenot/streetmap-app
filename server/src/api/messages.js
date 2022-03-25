@@ -25,7 +25,7 @@ const schema = Joi.object({
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  res.json(await messages.find());
+  res.json(await messages.find({}, { sort: { date: 1 } }));
 });
 
 router.post('/', async (req, res, next) => {
